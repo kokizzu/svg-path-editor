@@ -54,8 +54,6 @@ export class CanvasComponent implements OnInit, OnChanges, AfterViewInit {
   @Output() hoverPosition = new EventEmitter<{x: number, y: number} | undefined>();
 	@Output() cursorPosition = new EventEmitter<Point & {decimals?: number} | undefined>();
 
-  @Output() emptyCanvas = new EventEmitter<void>();
-
   _canvasWidth = 0;
   @Output() canvasWidthChange = new EventEmitter<number>();
 
@@ -101,10 +99,10 @@ export class CanvasComponent implements OnInit, OnChanges, AfterViewInit {
 
   ngAfterViewInit() {
     setTimeout(() => {
-      this.refreshCanvasSize(true);
+      this.refreshCanvasSize();
     });
     window.addEventListener('resize', () => {
-      this.refreshCanvasSize(true);
+      this.refreshCanvasSize();
     });
 
     // Following line is a workaround for a bug in Safari preventing the Wheel events to be fired:
@@ -152,11 +150,8 @@ export class CanvasComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
 
-  refreshCanvasSize(emitEmptyCanvas = false) {
+  refreshCanvasSize() {
     const rect = this.canvas.nativeElement.parentNode.getBoundingClientRect();
-    if (rect.width === 0 && emitEmptyCanvas) {
-      this.emptyCanvas.emit();
-    }
     this.canvasWidth = rect.width;
     this.canvasHeight = rect.height;
 

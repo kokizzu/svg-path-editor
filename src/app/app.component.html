@@ -471,7 +471,6 @@
             (dragging)="setIsDragging($event)"
             (canvasWidthChange)="canvasWidth = $event || canvasWidth"
             (canvasHeightChange)="canvasHeight = $event"
-            (emptyCanvas)="isLeftPanelOpened = false"
             (viewPort)="updateViewPort($event.x, $event.y, $event.w, $event.h, $event.force)"
             [editImages]="isEditingImages"
             [images]="images"
