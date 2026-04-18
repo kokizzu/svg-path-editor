@@ -43,7 +43,6 @@ export class CanvasComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() preview = false;
   @Input() filled = false;
   @Input() showTicks = false;
-  @Input() tickInterval = 1;
   @Input() draggedIsNew = false;
   @Input() images: Image[] = [];
   @Input() editImages = true;
@@ -170,14 +169,26 @@ export class CanvasComponent implements OnInit, OnChanges, AfterViewInit {
     });
   }
 
+  round(value: number): number {
+    return Math.round(value * 1e10) / 1e10;
+  }
+
+  isEvenTick(value: number): boolean {
+    return Number.isInteger(this.round(value / this.gridLabelStep));
+  }
+
   refreshGrid() {
     const niceStep = (minPx: number): number => {
       const raw = this.canvasWidth > 0 ? this.viewPortWidth / (this.canvasWidth / minPx) : 1;
       const e = Math.floor(Math.log10(Math.max(raw, 1e-10)));
       const p = Math.pow(10, e);
-      if (raw <= p)     return p;
-      if (raw <= 2 * p) return 2 * p;
-      if (raw <= 5 * p) return 5 * p;
+      if (raw <= p){
+        return p;
+      } else if (raw <= 2 * p) {
+        return 2 * p;
+      } else if (raw <= 5 * p) {
+        return 5 * p;
+      }
       return 10 * p;
     };
 
@@ -186,11 +197,11 @@ export class CanvasComponent implements OnInit, OnChanges, AfterViewInit {
 
     const xStart = Math.floor(this.viewPortX / step) * step;
     const xCount = Math.ceil(this.viewPortWidth / step) + 2;
-    this.xGrid = Array.from({length: xCount}, (_, i) => xStart + i * step);
+    this.xGrid = Array.from({length: xCount}, (_, i) => this.round(xStart + i * step));
 
     const yStart = Math.floor(this.viewPortY / step) * step;
     const yCount = Math.ceil(this.viewPortHeight / step) + 2;
-    this.yGrid = Array.from({length: yCount}, (_, i) => yStart + i * step);
+    this.yGrid = Array.from({length: yCount}, (_, i) => this.round(yStart + i * step));
   }
 
   eventToLocation(event: MouseEvent | TouchEvent, idx = 0): {x: number, y: number} {

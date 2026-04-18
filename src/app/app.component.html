@@ -129,11 +129,11 @@
                     </div>
                 </div>
                 <div class="row">
-                    <mat-checkbox [(ngModel)]="cfg.showTicks" style="flex:1">Show Ticks</mat-checkbox>
-                </div>
-                <div class="row">
                     <mat-checkbox [(ngModel)]="cfg.filled" style="flex:1">Fill</mat-checkbox>
                     <mat-checkbox [(ngModel)]="cfg.preview" style="flex:1">Preview</mat-checkbox>
+                </div>
+                <div class="row">
+                    <mat-checkbox [(ngModel)]="cfg.showTicks" style="flex:1">Show Ticks</mat-checkbox>
                     <mat-checkbox [ngModel]="cfg.minifyOutput" (ngModelChange)="cfg.minifyOutput=$event;afterModelChange()" style="flex:1">Minify output</mat-checkbox>
                 </div>
 
@@ -455,7 +455,6 @@
             [preview]="cfg.preview"
             [filled]="cfg.filled"
             [showTicks]="cfg.showTicks"
-            [tickInterval]="cfg.tickInterval"
             (afterModelChange)="afterModelChange()"
             (dragging)="setIsDragging($event)"
             (canvasWidthChange)="canvasWidth = $event || canvasWidth"
